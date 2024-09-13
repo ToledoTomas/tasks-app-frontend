@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { registerRequest, loginRequest } from "../api/auth";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -30,6 +31,14 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       console.log(res.data);
+      setUser(res.data);
+      setIsAuthenticated(true);
+
+      const token = res.data.token;
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      localStorage.setItem("token", token);
     } catch (error) {
       console.log(error);
     }
@@ -40,8 +49,8 @@ export const AuthProvider = ({ children }) => {
       const timer = setTimeout(() => {
         setErrors([]);
       }, 5000);
+      return () => clearTimeout(timer);
     }
-    return () => clearTimeout(timer);
   }, [errors]);
 
   return (
