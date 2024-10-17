@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 
 const RegisterPage = () => {
@@ -9,26 +8,11 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signUp, isAuthenticated, errors: registerErrors } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isAuthenticated]);
-
-  const onSubmit = handleSubmit(async data => {
-    signUp(data);
-  });
+  const onSubmit = handleSubmit(() => {});
 
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-zinc-800 p-10 rounded-md">
-      {registerErrors.map((error, i) => {
-        <div className="bg-red-500 text-white my-2" key={i}>
-          {error}
-        </div>;
-      })}
       <div>
         <form onSubmit={onSubmit}>
           <input
@@ -73,7 +57,6 @@ const RegisterPage = () => {
             </Link>
           }
         </p>
-      </div>
     </div>
   );
 };
