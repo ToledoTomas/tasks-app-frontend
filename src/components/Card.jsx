@@ -29,7 +29,7 @@ const Card = ({ filterStatus }) => {
   };
 
   return (
-    <div>
+    <div className="w-full mt-4">
       <div className="grid grid-cols-1 gap-4 justify-items-center">
         {data
           .filter(task => task.status === filterStatus)

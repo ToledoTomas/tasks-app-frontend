@@ -9,7 +9,7 @@ const Status = ({ title }) => {
       ? "text-yellow-500"
       : "text-green-500";
   return (
-    <div>
+    <div className="p-6 rounded-md border-2 max-w-xs w-full text-center shadow-md">
       <h1 className={`text-xl font-semibold ${color}`}>{title}</h1>
       <section>
         <Card filterStatus={title}/>
