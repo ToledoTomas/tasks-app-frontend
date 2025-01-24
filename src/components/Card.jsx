@@ -1,18 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { getTasksRequest } from "../api/tasks";
+import { getTasksRequest, deleteTaskRequest } from "../api/tasks";
+import edit from "../icons/edit.png";
+import remove from "../icons/remove.png";
 
 const Card = ({ filterStatus }) => {
   const [data, setData] = useState([]);
 
+  const fetchTasks = async () => {
+    try {
+      const res = await getTasksRequest();
+      setData(res.data);
+    } catch (err) {
+      console.error("Error al obtener las tareas:", err);
+    }
+  };
+
   useEffect(() => {
-    getTasksRequest()
-      .then(res => {
-        setData(res.data);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    fetchTasks();
   }, []);
+
+  const handleDelete = async id => {
+    try {
+      await deleteTaskRequest(id);
+      setData(prevData => prevData.filter(task => task.id !== id));
+    } catch (err) {
+      console.error("Error al eliminar la tarea:", err);
+    }
+  };
 
   return (
     <div>
@@ -21,6 +35,14 @@ const Card = ({ filterStatus }) => {
           .filter(task => task.status === filterStatus)
           .map(task => (
             <div key={task.id} className="border p-4 rounded shadow">
+              <div className="flex relative justify-end gap-3">
+                <button>
+                  <img className="size-5" src={edit} alt="Edit" />
+                </button>
+                <button onClick={() => handleDelete(task.id)}>
+                  <img className="size-5" src={remove} alt="Remove" />
+                </button>
+              </div>
               <h1 className="text-xl font-semibold">{task.user.username}</h1>
               <h3 className="text-lg font-semibold">
                 Título: <span className="font-normal">{task.title}</span>
