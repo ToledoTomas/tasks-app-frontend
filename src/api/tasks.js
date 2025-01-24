@@ -1,13 +1,15 @@
-import axios from "../libs/axios";
+import axios from "axios";
 
-export const getTasksRequest = () => axios.get(`/tasks`);
+const url = "http://localhost:3000";
 
-export const getTaskRequest = id => axios.get(`/tasks/${id}`);
+export const getTasksRequest = () => axios.get(`${url}/tasks`);
+
+export const getTaskRequest = id => axios.get(`${url}/tasks/${id}`);
 
 export const createTaskRequest = (title, description, status, userId) =>
-  axios.post(`/tasks`, { title, description, status, userId });
+  axios.post(`${url}/tasks`, { title, description, status, userId });
 
 export const updateTaskRequest = task =>
-  axios.patch(`/tasks/${task.id}`, task);
+  axios.patch(`${url}/tasks/${task.id}`, task);
 
-export const deleteTaskRequest = id => axios.delete(`/tasks/${id}`);
+export const deleteTaskRequest = id => axios.delete(`${url}/tasks/${id}`);
